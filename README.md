@@ -1,16 +1,23 @@
 # CodeAlpha URL Shortener
 
-A simple URL Shortener REST API built using Node.js, Express.js, and MongoDB.
+A REST API for shortening long URLs, redirecting users to original destinations, and tracking link clicks. Built using Node.js, Express.js, MongoDB, and Mongoose.
+
+## Live Demo
+
+- **Live API:** https://codealpha-url-shortener-3.onrender.com
+- **GitHub Repository:** https://github.com/anchalvns2006-del/CodeAlpha-URL-Shortener
 
 ## Features
 
 - Create short URLs from long URLs.
-- Store URLs in MongoDB using Mongoose.
-- Redirect short URLs to their original destinations.
-- Track the number of clicks on each short URL.
+- Store URL data in MongoDB Atlas.
+- Redirect short links to their original destinations.
+- Track the number of clicks.
 - Retrieve URL statistics.
-- Validate URL input and handle errors.
+- Validate URL input.
 - Generate unique short codes.
+- Handle invalid URLs and missing short codes.
+- Deploy the API using Render.
 
 ## Technologies Used
 
@@ -20,16 +27,16 @@ A simple URL Shortener REST API built using Node.js, Express.js, and MongoDB.
 - Mongoose
 - JavaScript
 - Git and GitHub
+- Render
 
 ## Project Structure
 
 ```text
-CodeAlpha_URL_Shortener/
+CodeAlpha-URL-Shortener/
 ├── models/
 │   └── Url.js
 ├── routes/
 │   └── urlRoutes.js
-├── .env
 ├── .gitignore
 ├── package.json
 ├── package-lock.json
@@ -37,16 +44,16 @@ CodeAlpha_URL_Shortener/
 └── server.js
 ```
 
+The `.env` file is created locally and is not committed to GitHub.
+
 ## Installation and Setup
 
 ### 1. Clone the repository
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
-cd CodeAlpha_URL_Shortener
+git clone https://github.com/anchalvns2006-del/CodeAlpha-URL-Shortener.git
+cd CodeAlpha-URL-Shortener
 ```
-
-Replace `YOUR_GITHUB_REPOSITORY_URL` with your actual GitHub repository URL.
 
 ### 2. Install dependencies
 
@@ -65,29 +72,33 @@ MONGODB_URI=YOUR_MONGODB_CONNECTION_STRING
 
 Replace the placeholder with your MongoDB Atlas connection string. Never publish your database credentials.
 
-### 4. Start the development server
+### 4. Run the development server
 
 ```bash
 npm run dev
 ```
 
-The API will run at:
+The local API runs at:
 
 `http://localhost:5000`
 
 ## API Endpoints
 
+Use the live base URL below for deployed API requests:
+
+`https://codealpha-url-shortener-3.onrender.com`
+
 ### 1. Check API status
 
 **GET** `/`
 
-Returns the API status.
+Returns the API status message.
 
-### 2. Check database connection
+### 2. Check database health
 
 **GET** `/health`
 
-Returns the current MongoDB connection status.
+Returns the API and database connection status.
 
 ### 3. Create a short URL
 
@@ -101,7 +112,13 @@ Request body:
 }
 ```
 
-Returns the original URL, generated short code, short URL, click count, and creation timestamp.
+Example cURL command:
+
+```bash
+curl.exe -X POST https://codealpha-url-shortener-3.onrender.com/shorten -H "Content-Type: application/json" -d "{\"originalUrl\":\"https://www.google.com\"}"
+```
+
+The response includes the original URL, generated short code, short URL, click count, and creation timestamp.
 
 ### 4. Redirect to the original URL
 
@@ -109,9 +126,9 @@ Returns the original URL, generated short code, short URL, click count, and crea
 
 Example:
 
-`http://localhost:5000/1391ec1e`
+`https://codealpha-url-shortener-3.onrender.com/YOUR_SHORT_CODE`
 
-Redirects the browser to the original URL and increments the click count.
+Redirects to the original URL and increments the click count.
 
 ### 5. Get URL statistics
 
@@ -119,44 +136,37 @@ Redirects the browser to the original URL and increments the click count.
 
 Example:
 
-`http://localhost:5000/stats/1391ec1e`
+`https://codealpha-url-shortener-3.onrender.com/stats/YOUR_SHORT_CODE`
 
-Returns the original URL, short code, short URL, click count, and timestamps.
+Returns the original URL, short code, click count, and timestamps.
 
-## Testing with cURL
+## Error Handling
 
-Create a short URL:
+The API handles:
 
-```bash
-curl.exe -X POST http://localhost:5000/shorten -H "Content-Type: application/json" -d "{\"originalUrl\":\"https://www.google.com\"}"
-```
+- Missing original URL.
+- Invalid URL formats.
+- Unsupported URL protocols.
+- Short codes that do not exist.
+- Database or server errors.
 
-Get URL statistics:
+## Deployment
 
-```bash
-curl.exe http://localhost:5000/stats/1391ec1e
-```
+The API is deployed on Render and uses MongoDB Atlas for persistent storage.
 
-Test an invalid URL:
+- **Build command:** `npm install`
+- **Start command:** `npm start`
+- **Environment variable:** `MONGODB_URI`
 
-```bash
-curl.exe -X POST http://localhost:5000/shorten -H "Content-Type: application/json" -d "{\"originalUrl\":\"not-a-valid-url\"}"
-```
-
-Test a missing short code:
-
-```bash
-curl.exe -i http://localhost:5000/unknown123
-```
-
-Note: `1391ec1e` is an example short code from local testing. Your generated codes may differ.
+The `.env` file and database credentials must remain private.
 
 ## Security
 
-- Keep `.env` private.
-- Never commit database credentials or passwords to GitHub.
-- Configure MongoDB Atlas network access securely.
-- Use HTTPS and an appropriate production base URL when deploying.
+- Keep environment variables and database credentials secret.
+- Do not commit `.env` to GitHub.
+- Use a strong MongoDB database password.
+- Restrict MongoDB Atlas network access where possible.
+- Use HTTPS for deployed URLs.
 
 ## Future Improvements
 
@@ -164,9 +174,9 @@ Note: `1391ec1e` is an example short code from local testing. Your generated cod
 - URL expiration.
 - User authentication.
 - Rate limiting.
-- Production deployment.
-- Improved analytics.
+- Enhanced analytics.
+- Automated API tests.
 
 ## Author
 
-Developed as a backend development internship project for CodeAlpha."# CodeAlpha-URL-Shortener" 
+Developed as a backend development internship project for CodeAlpha.
